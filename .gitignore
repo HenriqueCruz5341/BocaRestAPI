@@ -16,6 +16,7 @@ build
 test
 db
 db-config.json
+scripts
 
 # Build
 public/css/main.css
