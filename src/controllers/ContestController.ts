@@ -1,6 +1,8 @@
-import ContestCreateDto from '../models/dtos/ContestCreateDto';
-import HttpServer from '@src/providers/http/HttpServer';
-import ContestUseCase from '@src/usecases/ContestUseCase';
+import ContestCreateDto from '../models/contest/ContestCreateDto';
+import ContestUpdateDto from '../models/contest/ContestUpdateDto';
+import HttpResponse from '../providers/http/HttpResponse';
+import HttpServer from '../providers/http/HttpServer';
+import ContestUseCase from '../usecases/ContestUseCase';
 
 export default class ContestController {
   constructor(
@@ -11,8 +13,29 @@ export default class ContestController {
       'get',
       '/contest',
       async function (params: any, body: any) {
-        const contests = await contestUseCase.list();
-        return contests;
+        try {
+          const contests = await contestUseCase.list();
+
+          return new HttpResponse(200, contests);
+        } catch (e: any) {
+          return new HttpResponse(500, e.message);
+        }
+      }
+    );
+
+    httpServer.register(
+      'get',
+      '/contest/:id',
+      async function (params: any, body: any) {
+        try {
+          const { id } = params;
+          const contest = await contestUseCase.findById(id);
+
+          if (contest !== null) return new HttpResponse(200, contest);
+          return new HttpResponse(404, null);
+        } catch (e: any) {
+          return new HttpResponse(500, e.message);
+        }
       }
     );
 
@@ -20,19 +43,75 @@ export default class ContestController {
       'post',
       '/contest',
       async function (params: any, body: any) {
-        // try {
-        const contest = await contestUseCase.create(
-          new ContestCreateDto(
-            body.name,
-            body.description,
-            new Date(body.startTime),
-            new Date(body.endTime)
-          )
-        );
-        // } catch (error) {
-        //   return {"Invalid body"}
-        // }
-        return contest;
+        try {
+          const contest = await contestUseCase.create(
+            new ContestCreateDto(
+              body.contestNumber,
+              body.contestName,
+              body.contestStartDate,
+              body.contestDuration,
+              body.contestLocalSite,
+              body.contestPenalty,
+              body.contestMaxFileSize,
+              body.contestActive,
+              body.contestMainSite,
+              body.contestKeys,
+              body.contestUnlockKey,
+              body.contestMainSiteUrl
+            )
+          );
+
+          return new HttpResponse(201, contest);
+        } catch (e: any) {
+          return new HttpResponse(500, e.message);
+        }
+      }
+    );
+
+    httpServer.register(
+      'put',
+      '/contest/:id',
+      async function (params: any, body: any) {
+        try {
+          const { id } = params;
+          const contest = await contestUseCase.update(
+            id,
+            new ContestUpdateDto(
+              body.contestName,
+              body.contestStartDate,
+              body.contestDuration,
+              body.contestLocalSite,
+              body.contestPenalty,
+              body.contestMaxFileSize,
+              body.contestActive,
+              body.contestMainSite,
+              body.contestKeys,
+              body.contestUnlockKey,
+              body.contestMainSiteUrl
+            )
+          );
+
+          if (contest !== null) return new HttpResponse(200, contest);
+          return new HttpResponse(404, null);
+        } catch (e: any) {
+          return new HttpResponse(500, e.message);
+        }
+      }
+    );
+
+    httpServer.register(
+      'delete',
+      '/contest/:id',
+      async function (params: any, body: any) {
+        try {
+          const { id } = params;
+          const contest = await contestUseCase.delete(id);
+
+          if (contest !== null) return new HttpResponse(200, null);
+          return new HttpResponse(404, null);
+        } catch (e: any) {
+          return new HttpResponse(500, e.message);
+        }
       }
     );
   }

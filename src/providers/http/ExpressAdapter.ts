@@ -1,5 +1,6 @@
 import HttpServer from './HttpServer';
 import express from 'express';
+import HttpResponse from './HttpResponse';
 
 export default class ExpressAdapter implements HttpServer {
   app: any;
@@ -12,11 +13,11 @@ export default class ExpressAdapter implements HttpServer {
   async register(
     method: string,
     url: string,
-    callback: Function
+    callback: (params: any, body: any) => Promise<HttpResponse>
   ): Promise<void> {
     this.app[method](url, async function (req: any, res: any) {
       const output = await callback(req.params, req.body);
-      res.json(output);
+      res.status(output.getStatusCode()).send(output.getBody());
     });
   }
 
