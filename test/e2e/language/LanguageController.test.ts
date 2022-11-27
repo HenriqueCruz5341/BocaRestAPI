@@ -32,7 +32,7 @@ describe('Language', () => {
         langNumber: language.langNumber + 1,
       });
     } catch (e) {
-      console.log('ERROR: Não pode criar a base no beforeAll');
+      console.log('ERROR: Não pode criar a base de teste para a language');
     }
   });
 
@@ -42,12 +42,11 @@ describe('Language', () => {
       await axios.delete(`${baseUrl}/${language.langNumber}`);
       await axios.delete(`${baseContest}/${contest.contestNumber}`);
     } catch (e) {
-      console.log('ERROR: Não pode limpar a base no afterAll');
+      console.log('ERROR: Não pode limpar a base de teste da language');
     }
   });
 
   test('Deve testar a rota de listar os languages de um contest', async function () {
-    console.log(baseUrl);
     const response = await axios.get(baseUrl);
     const output = response.data;
     const statusCode = response.status;

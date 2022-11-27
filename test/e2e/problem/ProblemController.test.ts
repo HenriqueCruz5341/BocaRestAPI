@@ -3,8 +3,8 @@ import axios, { AxiosError } from 'axios';
 describe('Problem', () => {
   const baseContest = 'http://localhost:3000/contest';
   const contest = {
-    contestNumber: 40,
-    contestName: 'Contest 40',
+    contestNumber: 50,
+    contestName: 'Contest 50',
     contestStartDate: 1655931780,
     contestDuration: 3600,
     contestLocalSite: 1,
@@ -18,7 +18,6 @@ describe('Problem', () => {
   };
   const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/problem`;
   const problem = {
-    contestNumber: 40,
     problemNumber: 80,
     problemName: 'Problem 80',
     problemFullName: null,
@@ -40,7 +39,7 @@ describe('Problem', () => {
         problemNumber: problem.problemNumber + 1,
       });
     } catch (e) {
-      console.log('ERROR: Não pode criar o contest no beforeAll');
+      console.log('ERROR: Não pode criar a base de teste para o problem');
     }
   });
 
@@ -50,12 +49,11 @@ describe('Problem', () => {
       await axios.delete(`${baseUrl}/${problem.problemNumber}`);
       await axios.delete(`${baseContest}/${contest.contestNumber}`);
     } catch (e) {
-      console.log('ERROR: Não pode deletar o contest no afterAll');
+      console.log('ERROR: Não pode limpar a base de teste do problem');
     }
   });
 
   test('Deve testar a rota de listar os problems de um contest', async function () {
-    console.log(baseUrl);
     const response = await axios.get(baseUrl);
     const output = response.data;
     const statusCode = response.status;

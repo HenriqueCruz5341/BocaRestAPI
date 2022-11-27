@@ -13,7 +13,6 @@ export default class ProblemUseCase {
   }
 
   async create(problemCreateDto: ProblemCreateDto): Promise<ProblemEntity> {
-    console.log('problemCreateDto', problemCreateDto);
     const problems = await this.problem.create(problemCreateDto);
     return problems;
   }
