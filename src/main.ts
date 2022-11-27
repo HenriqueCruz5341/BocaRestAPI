@@ -9,6 +9,9 @@ import ProblemController from './controllers/ProblemController';
 import LanguageRepository from './repositories/language/LanguageRepository';
 import LanguageUseCase from './usecases/LanguageUseCase';
 import LanguageController from './controllers/LanguageController';
+import SiteRepository from './repositories/site/SiteRepository';
+import SiteUseCase from './usecases/SiteUseCase';
+import SiteController from './controllers/SiteController';
 
 const httpServer = new ExpressAdapter();
 const connection = new PgPromiseAdapter();
@@ -24,5 +27,9 @@ new ProblemController(httpServer, problemUseCase);
 const languageRepository = new LanguageRepository(connection);
 const languageUseCase = new LanguageUseCase(languageRepository);
 new LanguageController(httpServer, languageUseCase);
+
+const siteRepository = new SiteRepository(connection);
+const siteUseCase = new SiteUseCase(siteRepository);
+new SiteController(httpServer, siteUseCase);
 
 httpServer.listen(3000);
