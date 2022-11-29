@@ -16,6 +16,7 @@ build
 database
 db-config.json
 scripts
+anotacoes.txt
 
 # Build
 public/css/main.css

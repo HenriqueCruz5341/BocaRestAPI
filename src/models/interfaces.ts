@@ -12,3 +12,9 @@ export interface IdSite {
   idC: number;
   idS: number;
 }
+
+export interface IdUser {
+  idC: number;
+  idS: number;
+  idU: number;
+}

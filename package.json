@@ -13,7 +13,8 @@
     "test:contest": "jest test/e2e/contest/ContestController.test.ts",
     "test:problem": "jest test/e2e/problem/ProblemController.test.ts",
     "test:language": "jest test/e2e/language/LanguageController.test.ts",
-    "test:site": "jest test/e2e/site/SiteController.test.ts"
+    "test:site": "jest test/e2e/site/SiteController.test.ts",
+    "test:user": "jest test/e2e/user/UserController.test.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.14",
