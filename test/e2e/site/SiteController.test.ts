@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-describe('Language', () => {
+describe('Site', () => {
   const baseContest = 'http://localhost:3000/contest';
   const contest = {
     contestNumber: 60,
@@ -94,15 +94,15 @@ describe('Language', () => {
   });
 
   test('Deve testar a rota de criar um site', async function () {
-    const newLanguage = { ...site };
-    newLanguage.siteNumber--;
+    const newSite = { ...site };
+    newSite.siteNumber--;
 
-    const response = await axios.post(baseUrl, newLanguage);
+    const response = await axios.post(baseUrl, newSite);
     const output = response.data;
     const statusCode = response.status;
 
     expect(statusCode).toBe(201);
-    expect(output.siteNumber).toBe(newLanguage.siteNumber);
+    expect(output.siteNumber).toBe(newSite.siteNumber);
   });
 
   test('Deve retornar erro 500 se tentar criar site que já existe', async function () {
@@ -115,18 +115,18 @@ describe('Language', () => {
   });
 
   test('Deve testar a rota de atualizar um site', async function () {
-    const updatedLanguage = { ...site };
-    updatedLanguage.siteName = 'New Site Name';
+    const updatedSite = { ...site };
+    updatedSite.siteName = 'New Site Name';
 
     const response = await axios.put(
-      `${baseUrl}/${updatedLanguage.siteNumber}`,
-      updatedLanguage
+      `${baseUrl}/${updatedSite.siteNumber}`,
+      updatedSite
     );
     const output = response.data;
     const statusCode = response.status;
 
     expect(statusCode).toBe(200);
-    expect(output.siteNumber).toBe(updatedLanguage.siteNumber);
+    expect(output.siteNumber).toBe(updatedSite.siteNumber);
   });
 
   test('Deve testar a rota de deletar um site', async function () {
