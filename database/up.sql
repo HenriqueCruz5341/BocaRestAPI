@@ -258,6 +258,39 @@ CREATE TABLE "public"."usertable" (
     CONSTRAINT "user_pkey" PRIMARY KEY ("contestnumber", "usersitenumber", "usernumber")
 ) WITH (oids = false);
 
+DROP TABLE IF EXISTS "workingtable" CASCADE;
+CREATE TABLE public.workingtable (
+	contestnumber int4 NOT NULL,
+	workingnumber int4 NOT NULL,
+	workingname varchar(100) NOT NULL,
+	workingstartdate int4 NOT NULL,
+	workingenddate int4 NOT NULL,
+	workinglastanswerdate int4 NULL,
+	workingmaxfilesize int4 NOT NULL,
+	workingismultilogin bool NOT NULL,
+	createdat int4 NOT NULL,
+	updatedat int4 NOT NULL,
+	deletedat int4 NULL,
+	CONSTRAINT workingtable_pk PRIMARY KEY (contestnumber, workingnumber)
+);
+
+DROP TABLE IF EXISTS "problemlangtable" CASCADE;
+CREATE TABLE public.problemlangtable (
+	contestnumber int4 NOT NULL,
+	problemnumber int4 NOT NULL,
+	langnumber int4 NOT NULL,
+	CONSTRAINT problemlangtable_pk PRIMARY KEY (contestnumber, problemnumber, langnumber)
+);
+
+DROP TABLE IF EXISTS "workingusertable" CASCADE;
+CREATE TABLE public.workingusertable (
+	contestnumber int4 NOT NULL,
+	workingnumber int4 NOT NULL,
+	sitenumber int4 NOT NULL,
+	usernumber int4 NOT NULL,
+	CONSTRAINT workingusertable_pk PRIMARY KEY (contestnumber, workingnumber, sitenumber, usernumber)
+);
+
 ALTER TABLE ONLY "public"."answertable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
 ALTER TABLE ONLY "public"."bkptable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, sitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
@@ -284,3 +317,9 @@ ALTER TABLE ONLY "public"."sitetimetable" ADD CONSTRAINT "site_fk" FOREIGN KEY (
 ALTER TABLE ONLY "public"."tasktable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, sitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
 ALTER TABLE ONLY "public"."usertable" ADD CONSTRAINT "site_fk" FOREIGN KEY (contestnumber, usersitenumber) REFERENCES sitetable(contestnumber, sitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+
+ALTER TABLE public.problemlangtable ADD CONSTRAINT problemlangtable_fk FOREIGN KEY (contestnumber,problemnumber) REFERENCES public.problemtable(contestnumber,problemnumber);
+ALTER TABLE public.problemlangtable ADD CONSTRAINT problemlangtable_fk_1 FOREIGN KEY (contestnumber,langnumber) REFERENCES public.langtable(contestnumber,langnumber);
+
+ALTER TABLE public.workingusertable ADD CONSTRAINT workingusertable_fk FOREIGN KEY (contestnumber,workingnumber) REFERENCES public.workingtable(contestnumber,workingnumber);
+ALTER TABLE public.workingusertable ADD CONSTRAINT workingusertable_fk_1 FOREIGN KEY (contestnumber,sitenumber,usernumber) REFERENCES public.usertable(contestnumber,usersitenumber,usernumber);

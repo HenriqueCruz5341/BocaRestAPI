@@ -3,8 +3,8 @@ import axios, { AxiosError } from 'axios';
 describe('ProblemLanguage', () => {
   const baseContest = 'http://localhost:3000/contest';
   const contest = {
-    contestNumber: 60,
-    contestName: 'Contest 60',
+    contestNumber: 90,
+    contestName: 'Contest 90',
     contestStartDate: 1655931780,
     contestDuration: 3600,
     contestLocalSite: 1,

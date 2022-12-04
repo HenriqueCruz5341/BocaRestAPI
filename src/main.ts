@@ -18,6 +18,9 @@ import UserController from './controllers/UserController';
 import ProblemLanguageRepository from './repositories/problemLanguage/ProblemLanguageRepository';
 import ProblemLanguageUseCase from './usecases/ProblemLanguageUseCase';
 import ProblemLanguageController from './controllers/ProblemLanguageController';
+import WorkingRepository from './repositories/working/WorkingRepository';
+import WorkingUseCase from './usecases/WorkingUseCase';
+import WorkingController from './controllers/WorkingController';
 import appConfig from '../configs/app.json';
 
 const httpServer = new ExpressAdapter();
@@ -53,6 +56,10 @@ const connection = new PgPromiseAdapter();
     problemLanguageRepository
   );
   new ProblemLanguageController(httpServer, problemLanguageUseCase);
+
+  const workingRepository = new WorkingRepository(connection);
+  const workingUseCase = new WorkingUseCase(workingRepository);
+  new WorkingController(httpServer, workingUseCase);
 
   httpServer.listen(3000);
 })();

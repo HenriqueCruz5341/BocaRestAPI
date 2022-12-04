@@ -18,3 +18,8 @@ export interface IdUser {
   idS: number;
   idU: number;
 }
+
+export interface IdWorking {
+  idC: number;
+  idW: number;
+}
