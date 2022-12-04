@@ -1,4 +1,6 @@
 export default interface Connection {
+  upDatabase(file: string): Promise<null>;
+
   query(statement: string, params?: any[]): Promise<any>;
 
   none(statement: string, params?: any[]): Promise<null>;

@@ -1,13 +1,22 @@
 import Connection from './Connection';
-import * as dbConfig from '../../../db-config.json';
-import pgp, { IDatabase } from 'pg-promise';
+import * as dbConfig from '../../../configs/db.json';
+import pgp, { IDatabase, QueryFile } from 'pg-promise';
 import { IClient } from 'pg-promise/typescript/pg-subset';
+import path from 'path';
 
 export default class PgPromiseAdapter implements Connection {
   private connection: IDatabase<{}, IClient>;
 
   constructor() {
     this.connection = pgp()(dbConfig);
+  }
+
+  upDatabase(file: string): Promise<null> {
+    const basePath = path.join(__dirname, '../../');
+    const fullPath = path.join(basePath, file);
+    const sqlUpDatabase = new QueryFile(fullPath, { minify: true });
+
+    return this.connection.none(sqlUpDatabase);
   }
 
   query(statement: string, params: any[] = []): Promise<any> {

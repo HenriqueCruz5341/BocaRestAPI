@@ -15,28 +15,44 @@ import SiteController from './controllers/SiteController';
 import UserRepository from './repositories/user/UserRepository';
 import UserUseCase from './usecases/UserUseCase';
 import UserController from './controllers/UserController';
+import ProblemLanguageRepository from './repositories/problemLanguage/ProblemLanguageRepository';
+import ProblemLanguageUseCase from './usecases/ProblemLanguageUseCase';
+import ProblemLanguageController from './controllers/ProblemLanguageController';
+import appConfig from '../configs/app.json';
 
 const httpServer = new ExpressAdapter();
 const connection = new PgPromiseAdapter();
 
-const contestRepository = new ContestRepository(connection);
-const contestUseCase = new ContestUseCase(contestRepository);
-new ContestController(httpServer, contestUseCase);
+(async () => {
+  if (appConfig.upDatabase) {
+    await connection.upDatabase('../database/up.sql');
+  }
 
-const problemRepository = new ProblemRepository(connection);
-const problemUseCase = new ProblemUseCase(problemRepository);
-new ProblemController(httpServer, problemUseCase);
+  const contestRepository = new ContestRepository(connection);
+  const contestUseCase = new ContestUseCase(contestRepository);
+  new ContestController(httpServer, contestUseCase);
 
-const languageRepository = new LanguageRepository(connection);
-const languageUseCase = new LanguageUseCase(languageRepository);
-new LanguageController(httpServer, languageUseCase);
+  const problemRepository = new ProblemRepository(connection);
+  const problemUseCase = new ProblemUseCase(problemRepository);
+  new ProblemController(httpServer, problemUseCase);
 
-const siteRepository = new SiteRepository(connection);
-const siteUseCase = new SiteUseCase(siteRepository);
-new SiteController(httpServer, siteUseCase);
+  const languageRepository = new LanguageRepository(connection);
+  const languageUseCase = new LanguageUseCase(languageRepository);
+  new LanguageController(httpServer, languageUseCase);
 
-const userRepository = new UserRepository(connection);
-const userUseCase = new UserUseCase(userRepository);
-new UserController(httpServer, userUseCase);
+  const siteRepository = new SiteRepository(connection);
+  const siteUseCase = new SiteUseCase(siteRepository);
+  new SiteController(httpServer, siteUseCase);
 
-httpServer.listen(3000);
+  const userRepository = new UserRepository(connection);
+  const userUseCase = new UserUseCase(userRepository);
+  new UserController(httpServer, userUseCase);
+
+  const problemLanguageRepository = new ProblemLanguageRepository(connection);
+  const problemLanguageUseCase = new ProblemLanguageUseCase(
+    problemLanguageRepository
+  );
+  new ProblemLanguageController(httpServer, problemLanguageUseCase);
+
+  httpServer.listen(3000);
+})();

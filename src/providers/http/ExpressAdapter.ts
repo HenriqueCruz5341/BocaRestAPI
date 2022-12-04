@@ -22,6 +22,6 @@ export default class ExpressAdapter implements HttpServer {
   }
 
   async listen(port: number): Promise<void> {
-    return this.app.listen(port);
+    return this.app.listen(port, console.log(`Server running on port ${port}`));
   }
 }
