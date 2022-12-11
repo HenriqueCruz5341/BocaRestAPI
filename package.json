@@ -16,7 +16,8 @@
     "test:site": "jest test/e2e/site/SiteController.test.ts",
     "test:user": "jest test/e2e/user/UserController.test.ts",
     "test:problemLanguage": "jest test/e2e/problemLanguage/ProblemLanguageController.test.ts",
-    "test:working": "jest test/e2e/working/WorkingController.test.ts"
+    "test:working": "jest test/e2e/working/WorkingController.test.ts",
+    "test:workingUser": "jest test/e2e/workingUser/WorkingUserController.test.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.14",
