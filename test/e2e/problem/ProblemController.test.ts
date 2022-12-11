@@ -16,8 +16,19 @@ describe('Problem', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
+  const baseWorking = `http://localhost:3000/contest/${contest.contestNumber}/working`;
+  const working = {
+    workingNumber: 10,
+    workingName: 'Working 10',
+    workingStartDate: 1655931780,
+    workingEndDate: 1655931790,
+    workingMaxFileSize: 50,
+    workingIsMultiLogin: true,
+  };
+
   const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/problem`;
   const problem = {
+    workingNumber: working.workingNumber,
     problemNumber: 80,
     problemName: 'Problem 80',
     problemFullName: null,
@@ -33,6 +44,7 @@ describe('Problem', () => {
   beforeAll(async () => {
     try {
       await axios.post(baseContest, contest);
+      await axios.post(baseWorking, working);
       await axios.post(baseUrl, problem);
       await axios.post(baseUrl, {
         ...problem,
@@ -47,6 +59,7 @@ describe('Problem', () => {
     try {
       await axios.delete(`${baseUrl}/${problem.problemNumber - 1}`);
       await axios.delete(`${baseUrl}/${problem.problemNumber}`);
+      await axios.delete(`${baseWorking}/${working.workingNumber}`);
       await axios.delete(`${baseContest}/${contest.contestNumber}`);
     } catch (e) {
       console.log('ERROR: Não pode limpar a base de teste do problem');

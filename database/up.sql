@@ -114,6 +114,7 @@ DROP TABLE IF EXISTS "problemtable" CASCADE;
 CREATE TABLE "public"."problemtable" (
     "contestnumber" integer NOT NULL,
     "problemnumber" integer NOT NULL,
+    "workingnumber" integer NOT NULL,
     "problemname" character varying(20) NOT NULL,
     "problemfullname" character varying(100) DEFAULT '',
     "problembasefilename" character varying(100),
@@ -304,6 +305,7 @@ ALTER TABLE ONLY "public"."logtable" ADD CONSTRAINT "loguser" FOREIGN KEY (conte
 ALTER TABLE ONLY "public"."logtable" ADD CONSTRAINT "site_fk" FOREIGN KEY (contestnumber, sitenumber) REFERENCES sitetable(contestnumber, sitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
 ALTER TABLE ONLY "public"."problemtable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE ONLY "public"."problemtable" ADD CONSTRAINT "workingtable_fk" FOREIGN KEY (contestnumber,workingnumber) REFERENCES workingtable(contestnumber,workingnumber) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "answer_fk" FOREIGN KEY (contestnumber, runanswer) REFERENCES answertable(contestnumber, answernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "lang_fk" FOREIGN KEY (contestnumber, runlangnumber) REFERENCES langtable(contestnumber, langnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;

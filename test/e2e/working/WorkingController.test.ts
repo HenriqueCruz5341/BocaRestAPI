@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-describe('Problem', () => {
+describe('Working', () => {
   const baseContest = 'http://localhost:3000/contest';
   const contest = {
     contestNumber: 100,

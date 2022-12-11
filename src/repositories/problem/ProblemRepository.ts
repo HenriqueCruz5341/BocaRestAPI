@@ -30,14 +30,15 @@ export default class ProblemRepository implements ProblemRepositoryInterface {
   async create(problemCreateDto: ProblemCreateDto): Promise<ProblemEntity> {
     const problem = await this.connection.one<ProblemEntity>(
       `insert into problemtable
-        (contestnumber, problemnumber, problemname, problemfullname, problembasefilename, probleminputfilename, probleminputfile, probleminputfilehash, fake, problemcolorname, problemcolor, updatetime)
+        (contestnumber, problemnumber, workingnumber, problemname, problemfullname, problembasefilename, probleminputfilename, probleminputfile, probleminputfilehash, fake, problemcolorname, problemcolor, updatetime)
       values  
-        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) 
       returning *`,
       ProblemEntity.fromJson,
       [
         problemCreateDto.getContestNumber(),
         problemCreateDto.getProblemNumber(),
+        problemCreateDto.getWorkingNumber(),
         problemCreateDto.getProblemName(),
         problemCreateDto.getProblemFullName(),
         problemCreateDto.getProblemBaseFileName(),
@@ -68,13 +69,14 @@ export default class ProblemRepository implements ProblemRepositoryInterface {
   ): Promise<ProblemEntity | null> {
     const problem = this.connection.oneOrNone<ProblemEntity>(
       `update problemtable 
-      set problemname = $3, problemfullname = $4, problembasefilename = $5, probleminputfilename = $6, probleminputfile = $7, probleminputfilehash = $8, fake = $9, problemcolorname = $10, problemcolor = $11, updatetime = $12
+      set workingnumber = $3, problemname = $4, problemfullname = $5, problembasefilename = $6, probleminputfilename = $7, probleminputfile = $8, probleminputfilehash = $9, fake = $10, problemcolorname = $11, problemcolor = $12, updatetime = $13
       where problemnumber = $1 and contestnumber = $2
       returning *`,
       this.mapToEntityOrNull,
       [
         id.idP,
         id.idC,
+        problemUpdateDto.getWorkingNumber(),
         problemUpdateDto.getProblemName(),
         problemUpdateDto.getProblemFullName(),
         problemUpdateDto.getProblemBaseFileName(),

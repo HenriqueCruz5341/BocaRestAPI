@@ -52,6 +52,7 @@ export default class ProblemController {
               body.problemNumber,
               body.problemName,
               body.fake,
+              body.workingNumber,
               body.problemFullName,
               body.problemBaseFileName,
               body.problemInputFileName,
@@ -80,6 +81,7 @@ export default class ProblemController {
             new ProblemUpdateDto(
               body.problemName,
               body.fake,
+              body.workingNumber,
               body.problemFullName,
               body.problemBaseFileName,
               body.problemInputFileName,

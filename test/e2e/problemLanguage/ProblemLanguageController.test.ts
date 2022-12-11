@@ -16,8 +16,18 @@ describe('ProblemLanguage', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
+  const baseWorking = `http://localhost:3000/contest/${contest.contestNumber}/working`;
+  const working = {
+    workingNumber: 20,
+    workingName: 'Working 20',
+    workingStartDate: 1655931780,
+    workingEndDate: 1655931790,
+    workingMaxFileSize: 50,
+    workingIsMultiLogin: true,
+  };
   const baseProblem = `http://localhost:3000/contest/${contest.contestNumber}/problem`;
   const problem = {
+    workingNumber: working.workingNumber,
     problemNumber: 90,
     problemName: 'Problem 90',
     problemFullName: null,
@@ -64,6 +74,7 @@ describe('ProblemLanguage', () => {
   beforeAll(async () => {
     try {
       await axios.post(baseContest, contest);
+      await axios.post(baseWorking, working);
       await axios.post(baseProblem, problem);
       await axios.post(baseLanguage, languageOne);
       await axios.post(baseLanguage, languageTwo);
@@ -89,6 +100,7 @@ describe('ProblemLanguage', () => {
       await axios.delete(`${baseLanguage}/${languageFour.langNumber}`);
       await axios.delete(`${baseLanguage}/${languageFive.langNumber}`);
       await axios.delete(`${baseProblem}/${problem.problemNumber}`);
+      await axios.delete(`${baseWorking}/${working.workingNumber}`);
       await axios.delete(`${baseContest}/${contest.contestNumber}`);
     } catch (e) {
       console.log('ERROR: Não pode limpar a base de teste do problemLanguage');

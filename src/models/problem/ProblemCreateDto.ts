@@ -4,6 +4,7 @@ export default class ProblemCreateDto {
     readonly problemNumber: number,
     readonly problemName: string,
     readonly fake: boolean,
+    readonly workingNumber: number,
     readonly problemFullName?: string,
     readonly problemBaseFileName?: string,
     readonly problemInputFileName?: string,
@@ -27,6 +28,10 @@ export default class ProblemCreateDto {
 
   getFake(): boolean {
     return this.fake;
+  }
+
+  getWorkingNumber(): number {
+    return this.workingNumber;
   }
 
   getProblemFullName(): string | undefined {
