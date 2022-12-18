@@ -1,8 +1,7 @@
 -- Adminer 4.8.1 PostgreSQL 14.5 (Debian 14.5-1.pgdg110+1) dump
 -- Credits: Leonardo Deorce Lima de Oliveira and Rodrigo Laiola Guimaraes
 
-DROP TABLE IF EXISTS "answertable" CASCADE;
-CREATE TABLE "public"."answertable" (
+CREATE TABLE IF NOT EXISTS "public"."answertable" (
     "contestnumber" integer NOT NULL,
     "answernumber" integer NOT NULL,
     "runanswer" character varying(50) NOT NULL,
@@ -13,8 +12,7 @@ CREATE TABLE "public"."answertable" (
     CONSTRAINT "answer_pkey" PRIMARY KEY ("contestnumber", "answernumber")
 ) WITH (oids = false);
 
-DROP TABLE IF EXISTS "bkptable" CASCADE;
-CREATE TABLE "public"."bkptable" (
+CREATE TABLE IF NOT EXISTS "public"."bkptable" (
     "contestnumber" integer NOT NULL,
     "sitenumber" integer NOT NULL,
     "bkpnumber" integer NOT NULL,
@@ -29,10 +27,9 @@ CREATE TABLE "public"."bkptable" (
     CONSTRAINT "bkp_pkey" PRIMARY KEY ("contestnumber", "sitenumber", "bkpnumber")
 ) WITH (oids = false);
 
-CREATE INDEX "bkp_index2" ON "public"."bkptable" USING btree ("contestnumber", "sitenumber", "usernumber");
+CREATE INDEX IF NOT EXISTS "bkp_index2" ON "public"."bkptable" USING btree ("contestnumber", "sitenumber", "usernumber");
 
-DROP TABLE IF EXISTS "clartable" CASCADE;
-CREATE TABLE "public"."clartable" (
+CREATE TABLE IF NOT EXISTS "public"."clartable" (
     "contestnumber" integer NOT NULL,
     "clarsitenumber" integer NOT NULL,
     "clarnumber" integer NOT NULL,
@@ -51,10 +48,9 @@ CREATE TABLE "public"."clartable" (
     CONSTRAINT "clar_pkey" PRIMARY KEY ("contestnumber", "clarsitenumber", "clarnumber")
 ) WITH (oids = false);
 
-CREATE INDEX "clar_index2" ON "public"."clartable" USING btree ("contestnumber", "clarsitenumber", "usernumber");
+CREATE INDEX IF NOT EXISTS "clar_index2" ON "public"."clartable" USING btree ("contestnumber", "clarsitenumber", "usernumber");
 
-DROP TABLE IF EXISTS "contesttable" CASCADE;
-CREATE TABLE "public"."contesttable" (
+CREATE TABLE IF NOT EXISTS "public"."contesttable" (
     "contestnumber" integer NOT NULL,
     "contestname" character varying(100) NOT NULL,
     "conteststartdate" integer NOT NULL,
@@ -74,8 +70,7 @@ CREATE TABLE "public"."contesttable" (
     CONSTRAINT "contestnumber_index" UNIQUE ("contestnumber")
 ) WITH (oids = false);
 
-DROP TABLE IF EXISTS "langtable" CASCADE;
-CREATE TABLE "public"."langtable" (
+CREATE TABLE IF NOT EXISTS "public"."langtable" (
     "contestnumber" integer NOT NULL,
     "langnumber" integer NOT NULL,
     "langname" character varying(50) NOT NULL,
@@ -84,15 +79,13 @@ CREATE TABLE "public"."langtable" (
     CONSTRAINT "lang_pkey" PRIMARY KEY ("contestnumber", "langnumber")
 ) WITH (oids = false);
 
-CREATE INDEX "lang_index" ON "public"."langtable" USING btree ("contestnumber", "langnumber");
+CREATE INDEX IF NOT EXISTS "lang_index" ON "public"."langtable" USING btree ("contestnumber", "langnumber");
 
-CREATE INDEX "lang_index2" ON "public"."langtable" USING btree ("contestnumber", "langname");
+CREATE INDEX IF NOT EXISTS "lang_index2" ON "public"."langtable" USING btree ("contestnumber", "langname");
 
-DROP TABLE IF EXISTS "logtable" CASCADE;
-DROP SEQUENCE IF EXISTS logtable_lognumber_seq CASCADE;
-CREATE SEQUENCE logtable_lognumber_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+CREATE SEQUENCE IF NOT EXISTS logtable_lognumber_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-CREATE TABLE "public"."logtable" (
+CREATE TABLE IF NOT EXISTS "public"."logtable" (
     "lognumber" integer DEFAULT nextval('logtable_lognumber_seq') NOT NULL,
     "contestnumber" integer NOT NULL,
     "sitenumber" integer NOT NULL,
@@ -105,16 +98,13 @@ CREATE TABLE "public"."logtable" (
     CONSTRAINT "log_pkey" PRIMARY KEY ("lognumber")
 ) WITH (oids = false);
 
-CREATE INDEX "log_index" ON "public"."logtable" USING btree ("contestnumber", "sitenumber", "logdate");
+CREATE INDEX IF NOT EXISTS "log_index" ON "public"."logtable" USING btree ("contestnumber", "sitenumber", "logdate");
 
-CREATE INDEX "log_index2" ON "public"."logtable" USING btree ("contestnumber", "loguser", "sitenumber");
+CREATE INDEX IF NOT EXISTS "log_index2" ON "public"."logtable" USING btree ("contestnumber", "loguser", "sitenumber");
 
-
-DROP TABLE IF EXISTS "problemtable" CASCADE;
-CREATE TABLE "public"."problemtable" (
+CREATE TABLE IF NOT EXISTS "public"."problemtable" (
     "contestnumber" integer NOT NULL,
     "problemnumber" integer NOT NULL,
-    "workingnumber" integer NOT NULL,
     "problemname" character varying(20) NOT NULL,
     "problemfullname" character varying(100) DEFAULT '',
     "problembasefilename" character varying(100),
@@ -129,10 +119,11 @@ CREATE TABLE "public"."problemtable" (
     CONSTRAINT "problem_pkey" PRIMARY KEY ("contestnumber", "problemnumber")
 ) WITH (oids = false);
 
-CREATE INDEX "problem_index2" ON "public"."problemtable" USING btree ("contestnumber", "problemname");
+ALTER TABLE "public"."problemtable" ADD COLUMN IF NOT EXISTS "workingnumber" integer NOT NULL;
 
-DROP TABLE IF EXISTS "runtable" CASCADE;
-CREATE TABLE "public"."runtable" (
+CREATE INDEX IF NOT EXISTS "problem_index2" ON "public"."problemtable" USING btree ("contestnumber", "problemname");
+
+CREATE TABLE IF NOT EXISTS "public"."runtable" (
     "contestnumber" integer NOT NULL,
     "runsitenumber" integer NOT NULL,
     "runnumber" integer NOT NULL,
@@ -165,10 +156,9 @@ CREATE TABLE "public"."runtable" (
     CONSTRAINT "run_pkey" PRIMARY KEY ("contestnumber", "runsitenumber", "runnumber")
 ) WITH (oids = false);
 
-CREATE INDEX "run_index2" ON "public"."runtable" USING btree ("contestnumber", "runsitenumber", "usernumber");
+CREATE INDEX IF NOT EXISTS "run_index2" ON "public"."runtable" USING btree ("contestnumber", "runsitenumber", "usernumber");
 
-DROP TABLE IF EXISTS "sitetable" CASCADE;
-CREATE TABLE "public"."sitetable" (
+CREATE TABLE IF NOT EXISTS "public"."sitetable" (
     "contestnumber" integer NOT NULL,
     "sitenumber" integer NOT NULL,
     "siteip" character varying(200) NOT NULL,
@@ -197,8 +187,7 @@ CREATE TABLE "public"."sitetable" (
     CONSTRAINT "site_pkey" PRIMARY KEY ("contestnumber", "sitenumber")
 ) WITH (oids = false);
 
-DROP TABLE IF EXISTS "sitetimetable" CASCADE;
-CREATE TABLE "public"."sitetimetable" (
+CREATE TABLE IF NOT EXISTS "public"."sitetimetable" (
     "contestnumber" integer NOT NULL,
     "sitenumber" integer NOT NULL,
     "sitestartdate" integer NOT NULL,
@@ -208,10 +197,9 @@ CREATE TABLE "public"."sitetimetable" (
     CONSTRAINT "sitetime_pkey" PRIMARY KEY ("contestnumber", "sitenumber", "sitestartdate")
 ) WITH (oids = false);
 
-CREATE INDEX "sitetimesite_index" ON "public"."sitetimetable" USING btree ("contestnumber", "sitenumber");
+CREATE INDEX IF NOT EXISTS "sitetimesite_index" ON "public"."sitetimetable" USING btree ("contestnumber", "sitenumber");
 
-DROP TABLE IF EXISTS "tasktable" CASCADE;
-CREATE TABLE "public"."tasktable" (
+CREATE TABLE IF NOT EXISTS "public"."tasktable" (
     "contestnumber" integer NOT NULL,
     "sitenumber" integer NOT NULL,
     "usernumber" integer NOT NULL,
@@ -233,8 +221,7 @@ CREATE TABLE "public"."tasktable" (
     CONSTRAINT "task_pkey" PRIMARY KEY ("contestnumber", "sitenumber", "tasknumber")
 ) WITH (oids = false);
 
-DROP TABLE IF EXISTS "usertable" CASCADE;
-CREATE TABLE "public"."usertable" (
+CREATE TABLE IF NOT EXISTS "public"."usertable" (
     "contestnumber" integer NOT NULL,
     "usersitenumber" integer NOT NULL,
     "usernumber" integer NOT NULL,
@@ -259,69 +246,88 @@ CREATE TABLE "public"."usertable" (
     CONSTRAINT "user_pkey" PRIMARY KEY ("contestnumber", "usersitenumber", "usernumber")
 ) WITH (oids = false);
 
-DROP TABLE IF EXISTS "workingtable" CASCADE;
-CREATE TABLE public.workingtable (
-	contestnumber int4 NOT NULL,
-	workingnumber int4 NOT NULL,
-	workingname varchar(100) NOT NULL,
-	workingstartdate int4 NOT NULL,
-	workingenddate int4 NOT NULL,
-	workinglastanswerdate int4 NULL,
-	workingmaxfilesize int4 NOT NULL,
-	workingismultilogin bool NOT NULL,
-	createdat int4 NOT NULL,
-	updatedat int4 NOT NULL,
-	deletedat int4 NULL,
-	CONSTRAINT workingtable_pk PRIMARY KEY (contestnumber, workingnumber)
-);
+CREATE TABLE IF NOT EXISTS "public"."workingtable" (
+	"contestnumber" integer NOT NULL,
+	"workingnumber" integer NOT NULL,
+	"workingname" varchar(100) NOT NULL,
+	"workingstartdate" integer NOT NULL,
+	"workingenddate" integer NOT NULL,
+	"workinglastanswerdate" integer NULL,
+	"workingmaxfilesize" integer NOT NULL,
+	"workingismultilogin" bool NOT NULL,
+	"createdat" integer NOT NULL,
+	"updatedat" integer NOT NULL,
+	"deletedat" integer NULL,
+	CONSTRAINT "workingtable_pk" PRIMARY KEY ("contestnumber", "workingnumber")
+) WITH (oids = false);
 
-DROP TABLE IF EXISTS "problemlangtable" CASCADE;
-CREATE TABLE public.problemlangtable (
-	contestnumber int4 NOT NULL,
-	problemnumber int4 NOT NULL,
-	langnumber int4 NOT NULL,
-	CONSTRAINT problemlangtable_pk PRIMARY KEY (contestnumber, problemnumber, langnumber)
-);
+CREATE TABLE IF NOT EXISTS public.problemlangtable (
+	"contestnumber" int4 NOT NULL,
+	"problemnumber" int4 NOT NULL,
+	"langnumber" int4 NOT NULL,
+	CONSTRAINT "problemlangtable_pk" PRIMARY KEY ("contestnumber", "problemnumber", "langnumber")
+) WITH (oids = false);
 
-DROP TABLE IF EXISTS "workingusertable" CASCADE;
-CREATE TABLE public.workingusertable (
-	contestnumber int4 NOT NULL,
-	workingnumber int4 NOT NULL,
-	sitenumber int4 NOT NULL,
-	usernumber int4 NOT NULL,
-	CONSTRAINT workingusertable_pk PRIMARY KEY (contestnumber, workingnumber, sitenumber, usernumber)
-);
+CREATE TABLE IF NOT EXISTS public.workingusertable (
+	"contestnumber" int4 NOT NULL,
+	"workingnumber" int4 NOT NULL,
+	"sitenumber" int4 NOT NULL,
+	"usernumber" int4 NOT NULL,
+	CONSTRAINT "workingusertable_pk" PRIMARY KEY ("contestnumber", "workingnumber", "sitenumber", "usernumber")
+) WITH (oids = false);
 
+ALTER TABLE "public"."answertable" DROP CONSTRAINT IF EXISTS "contest_fk";
 ALTER TABLE ONLY "public"."answertable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+
+ALTER TABLE "public"."bkptable" DROP CONSTRAINT IF EXISTS "user_fk";
 ALTER TABLE ONLY "public"."bkptable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, sitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."clartable" DROP CONSTRAINT IF EXISTS "problem_fk";
 ALTER TABLE ONLY "public"."clartable" ADD CONSTRAINT "problem_fk" FOREIGN KEY (contestnumber, clarproblem) REFERENCES problemtable(contestnumber, problemnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."clartable" DROP CONSTRAINT IF EXISTS "user_fk";
 ALTER TABLE ONLY "public"."clartable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, clarsitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."langtable" DROP CONSTRAINT IF EXISTS "contest_fk";
 ALTER TABLE ONLY "public"."langtable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."logtable" DROP CONSTRAINT IF EXISTS "loguser";
 ALTER TABLE ONLY "public"."logtable" ADD CONSTRAINT "loguser" FOREIGN KEY (contestnumber, loguser, sitenumber) REFERENCES usertable(contestnumber, usernumber, usersitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."logtable" DROP CONSTRAINT IF EXISTS "site_fk";
 ALTER TABLE ONLY "public"."logtable" ADD CONSTRAINT "site_fk" FOREIGN KEY (contestnumber, sitenumber) REFERENCES sitetable(contestnumber, sitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."problemtable" DROP CONSTRAINT IF EXISTS "contest_fk";
 ALTER TABLE ONLY "public"."problemtable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."problemtable" DROP CONSTRAINT IF EXISTS "workingtable_fk";
 ALTER TABLE ONLY "public"."problemtable" ADD CONSTRAINT "workingtable_fk" FOREIGN KEY (contestnumber,workingnumber) REFERENCES workingtable(contestnumber,workingnumber) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE "public"."runtable" DROP CONSTRAINT IF EXISTS "answer_fk";
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "answer_fk" FOREIGN KEY (contestnumber, runanswer) REFERENCES answertable(contestnumber, answernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."runtable" DROP CONSTRAINT IF EXISTS "lang_fk";
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "lang_fk" FOREIGN KEY (contestnumber, runlangnumber) REFERENCES langtable(contestnumber, langnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."runtable" DROP CONSTRAINT IF EXISTS "problem_fk";
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "problem_fk" FOREIGN KEY (contestnumber, runproblem) REFERENCES problemtable(contestnumber, problemnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
+ALTER TABLE "public"."runtable" DROP CONSTRAINT IF EXISTS "user_fk";
 ALTER TABLE ONLY "public"."runtable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, runsitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."sitetable" DROP CONSTRAINT IF EXISTS "contest_fk";
 ALTER TABLE ONLY "public"."sitetable" ADD CONSTRAINT "contest_fk" FOREIGN KEY (contestnumber) REFERENCES contesttable(contestnumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."sitetimetable" DROP CONSTRAINT IF EXISTS "site_fk";
 ALTER TABLE ONLY "public"."sitetimetable" ADD CONSTRAINT "site_fk" FOREIGN KEY (contestnumber, sitenumber) REFERENCES sitetable(contestnumber, sitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."tasktable" DROP CONSTRAINT IF EXISTS "user_fk";
 ALTER TABLE ONLY "public"."tasktable" ADD CONSTRAINT "user_fk" FOREIGN KEY (contestnumber, sitenumber, usernumber) REFERENCES usertable(contestnumber, usersitenumber, usernumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
+ALTER TABLE "public"."usertable" DROP CONSTRAINT IF EXISTS "site_fk";
 ALTER TABLE ONLY "public"."usertable" ADD CONSTRAINT "site_fk" FOREIGN KEY (contestnumber, usersitenumber) REFERENCES sitetable(contestnumber, sitenumber) ON UPDATE CASCADE ON DELETE CASCADE NOT DEFERRABLE;
 
-ALTER TABLE public.problemlangtable ADD CONSTRAINT problemlangtable_fk FOREIGN KEY (contestnumber,problemnumber) REFERENCES public.problemtable(contestnumber,problemnumber);
-ALTER TABLE public.problemlangtable ADD CONSTRAINT problemlangtable_fk_1 FOREIGN KEY (contestnumber,langnumber) REFERENCES public.langtable(contestnumber,langnumber);
+ALTER TABLE "public"."problemlangtable" DROP CONSTRAINT IF EXISTS "problemlangtable_fk";
+ALTER TABLE ONLY "public"."problemlangtable" ADD CONSTRAINT "problemlangtable_fk" FOREIGN KEY (contestnumber,problemnumber) REFERENCES public.problemtable(contestnumber,problemnumber);
+ALTER TABLE "public"."problemlangtable" DROP CONSTRAINT IF EXISTS "problemlangtable_fk_1";
+ALTER TABLE ONLY "public"."problemlangtable" ADD CONSTRAINT "problemlangtable_fk_1" FOREIGN KEY (contestnumber,langnumber) REFERENCES public.langtable(contestnumber,langnumber);
 
-ALTER TABLE public.workingusertable ADD CONSTRAINT workingusertable_fk FOREIGN KEY (contestnumber,workingnumber) REFERENCES public.workingtable(contestnumber,workingnumber);
-ALTER TABLE public.workingusertable ADD CONSTRAINT workingusertable_fk_1 FOREIGN KEY (contestnumber,sitenumber,usernumber) REFERENCES public.usertable(contestnumber,usersitenumber,usernumber);
+ALTER TABLE "public"."workingusertable" DROP CONSTRAINT IF EXISTS "workingusertable_fk";
+ALTER TABLE ONLY "public"."workingusertable" ADD CONSTRAINT "workingusertable_fk" FOREIGN KEY (contestnumber,workingnumber) REFERENCES public.workingtable(contestnumber,workingnumber);
+ALTER TABLE "public"."workingusertable" DROP CONSTRAINT IF EXISTS "workingusertable_fk_1";
+ALTER TABLE ONLY "public"."workingusertable" ADD CONSTRAINT "workingusertable_fk_1" FOREIGN KEY (contestnumber,sitenumber,usernumber) REFERENCES public.usertable(contestnumber,usersitenumber,usernumber);

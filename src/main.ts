@@ -24,14 +24,15 @@ import WorkingController from './controllers/WorkingController';
 import WorkingUserRepository from './repositories/workingUser/WorkingUserRepository';
 import WorkingUserUseCase from './usecases/WorkingUserUseCase';
 import WorkingUserController from './controllers/WorkingUserController';
-import appConfig from '../configs/app.json';
 
 const httpServer = new ExpressAdapter();
 const connection = new PgPromiseAdapter();
 
 (async () => {
-  if (appConfig.upDatabase) {
-    await connection.upDatabase('../database/up.sql');
+  if (process.env.UP_DATABASE === 'true') {
+    if (__dirname.includes('build'))
+      await connection.upDatabase('../../database/up.sql');
+    else await connection.upDatabase('../database/up.sql');
   }
 
   const contestRepository = new ContestRepository(connection);
@@ -68,5 +69,5 @@ const connection = new PgPromiseAdapter();
   const workingUserUseCase = new WorkingUserUseCase(workingUserRepository);
   new WorkingUserController(httpServer, workingUserUseCase);
 
-  httpServer.listen(3000);
+  httpServer.listen(Number(process.env.PORT) || 3000);
 })();

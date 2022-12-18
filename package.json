@@ -5,8 +5,10 @@
   "license": "ISC",
   "scripts": {
     "build": "tsc",
-    "start": "node build/main.js",
+    "start": "node build/src/main.js",
     "dev": "ts-node-dev --ignore-watch node_modules src/main.ts",
+    "docker:dev": "docker-compose -f docker-compose-dev.yml -f docker-compose-dev-api.yml up",
+    "docker:prod": "docker-compose -f docker-compose-prod.yml -f docker-compose-prod-api.yml up",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

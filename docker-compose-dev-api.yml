@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    boca-api:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        container_name: boca-api
+        volumes:
+            - .:/home/node/app
+        restart: unless-stopped
+        depends_on:
+            - boca-postgres
+        command: sh -c "npm run dev"
+        environment:
+            # Database configuration
+            - DB_HOST=boca-postgres
+            - DB_PORT=5432
+            - DB_NAME=bocadb
+            # unprivileged boca user
+            - DB_USER=bocauser
+            - DB_PASSWORD=dAm0HAiC
+            # configure api
+            - UP_DATABASE=true
+            - PORT=3000
+        ports: 
+            - 3000:3000

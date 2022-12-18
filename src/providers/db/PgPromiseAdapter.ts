@@ -1,5 +1,4 @@
 import Connection from './Connection';
-import * as dbConfig from '../../../configs/db.json';
 import pgp, { IDatabase, QueryFile } from 'pg-promise';
 import { IClient } from 'pg-promise/typescript/pg-subset';
 import path from 'path';
@@ -8,6 +7,14 @@ export default class PgPromiseAdapter implements Connection {
   private connection: IDatabase<{}, IClient>;
 
   constructor() {
+    const dbConfig = {
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+    };
+
     this.connection = pgp()(dbConfig);
   }
 
