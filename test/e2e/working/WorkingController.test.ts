@@ -56,7 +56,6 @@ describe('Working', () => {
 
     expect(statusCode).toBe(200);
     expect(output).toBeInstanceOf(Array);
-    // TODO banco de teste, testar resultados output
   });
 
   test('Deve testar a rota de listar working por id', async function () {

@@ -94,7 +94,6 @@ describe('User', () => {
 
     expect(statusCode).toBe(200);
     expect(output).toBeInstanceOf(Array);
-    // TODO banco de teste, testar resultados output
   });
 
   test('Deve testar a rota de listar user por id', async function () {
