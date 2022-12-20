@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Esta API foi feita com o objetivo de propor uma interface de comunicação com o banco de dados do sistema de correção automático BOCA. O trabalho foi proposto pelo professor Rodrigo Laiola na disciplina de Banco de Dados I do Curso Engenharia de Computação na UFES, e realizado pelos alunos Henrique Faria Ribeiro e Henrique Paulino Cruz.
+Esta API foi feita com o objetivo de propor uma interface de comunicação com o banco de dados do sistema de correção automático BOCA. O trabalho foi proposto pelo professor [Rodrigo Laiola](https://github.com/rlaiola) na disciplina de Banco de Dados I do Curso Engenharia de Computação na UFES, e realizado pelos alunos [Henrique Faria Ribeiro](https://github.com/riquefr) e [Henrique Paulino Cruz](https://github.com/HenriqueCruz5341).
 
 ## Desenvolvimento
 
@@ -22,6 +22,34 @@ Como foi dito, o código foi desenvolvido pelos alunos Henrique Faria Ribeiro e 
 - [jest](https://jestjs.io/pt-BR/): Biblioteca para Node.js que facilita a criação de testes unitários.
 
 ## Decisões de projeto
+
+### Arquitetura
+
+A arquitetura do projeto foi feita utilizando o padrão [Hexagonal](https://engsoftmoderna.info/artigos/arquitetura-hexagonal.html), que se baseia na ideia de construir sistemas que favorecem reusabilidade de código, alta coesão, baixo acoplamento, independência de tecnologia e que são mais fáceis de serem testados. Para isso foi utilizado de inspiração o seguinte [projeto](https://github.com/rodrigobranas/hexagonal_architecture_integration_unit_tests) do [Rodrigo Branas](https://github.com/rodrigobranas) no GitHub.
+
+### Modelagem do banco de dados
+
+A modelagem do banco de dados foi inicialmente provida pelo professor, com um desafio de incluir a tabela de Working no sistema. Essa tabela teria um relacionamento NxN com a tabela de User e um relacionamento 1xN com a tabela de Problem. Para resolver esse problema, foi criada uma tabela de WorkingUser, que teria um relacionamento 1xN com a tabela de User e um relacionamento 1xN com a tabela de Workings, como pode ser visto no diagrama abaixo:
+
+![Diagrama de entidade e relacionamento](assets/workinguser_model.png)
+
+Outro desafio foi a inclusão de um relacionamento entre as tabelas de Problem e Lang, que foi resolvido criando uma tabela de ProblemLang, que teria um relacionamento 1xN com a tabela de Problem e um relacionamento 1xN com a tabela de Lang, como pode ser visto no diagrama abaixo:
+
+![Diagrama de entidade e relacionamento](assets/problemlang_model.png)
+
+### Roteamento
+
+Para fazer o roteamento da API, foi seguido o padrão REST, com alguns exemplos dados pelo próprio professor. Partindo dessa base todas as outras rotas criadas foram feitas e podem ser vistas na seção de [Documentação](#Documentação). Uma observação que vale ser citada é que nos exemplos providos pelo professor foi passado a seguinte rota para operações na tabela de WorkingUser `api/contest/:id_c/user/:id_u/working`, mas como uma tupla da tabela User não é identificado apenas por um id, mas também por um identificador do site ao qual pertence, a rota foi alterada para `api/contest/:id_c/site/id_s/user/:id_u/working`.
+
+### Colunas de preenchimento automático
+
+Algumas colunas em certas tabelas no banco de dados são preenchidas automaticamente pelo sistema do BOCA, pelo menos é o que dá a entender ao ler o nome dessas colunas. Alguns exemplos são as colunas `contestlastmileanswer` e `contestlastmilescore`, com isso essas colunas não foram incluídas na requisição de criação de novos registros. Uma outra coluna que o próprio sistema calcula, mas dessa vez não é o do BOCA e sim o da API, são as colunas `updatetime`, ou seja, toda vez que um registro é criado e atualizado, a coluna `updatetime` é preenchida com a data e hora atual, sem a necessidade que esse valor seja passado pelo body da requisição.
+
+Para obter mais detalhes do que deve ser passado no body de cada requisição, basta acessar a seção de [Documentação](#Documentação).
+
+### Body e Response
+
+Para ficar de acordo com o padrão adotado no JSON, que é o camel case, os body e response das requisições foram mapeados dessa forma, ou seja, apesar do banco de dados estar sem nenhum padrão, as requisições e respostas são em camel case.
 
 ## Instalação
 
