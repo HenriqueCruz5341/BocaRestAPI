@@ -51,6 +51,18 @@ Para obter mais detalhes do que deve ser passado no body de cada requisição, b
 
 Para ficar de acordo com o padrão adotado no JSON, que é o camel case, os body e response das requisições foram mapeados dessa forma, ou seja, apesar do banco de dados estar sem nenhum padrão, as requisições e respostas são em camel case.
 
+### Variáveis de ambiente
+
+No projeto existem algumas variáveis de ambiente que podem ser configuradas diretamente nos arquivos de `docker-compose-api-dev.yml` e `docker-compose-api-prod.yml`. Essas variáveis são:
+
+- `PORT`: Porta que a API irá rodar.
+- `DB_HOST`: Host do banco de dados.
+- `DB_PORT`: Porta do banco de dados.
+- `DB_USER`: Usuário do banco de dados.
+- `DB_PASSWORD`: Senha do banco de dados.
+- `DB_NAME`: Nome do banco de dados.
+- `UP_DATABASE`: Aceita os valores de `true` ou `false`, se for `true` a API irá atualizar e criar novas tabelas no banco de dados assim que for iniciada, se for `false` a API não fará essa ação. É recomendável deixar essa opção como `true` apenas a primeira vez que a API for executada, depois deve ser mudada para `false`.
+
 ## Instalação
 
 Para instalar o projeto, é necessário ter o Node.js e o Docker instalados. Após isso, basta clonar o repositório e executar o comando `npm install` para instalar as dependências do projeto.
