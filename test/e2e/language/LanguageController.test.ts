@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('Language', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 40,
     contestName: 'Contest 40',
@@ -16,7 +16,7 @@ describe('Language', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/language`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/language`;
   const language = {
     langNumber: 80,
     langName: 'Language 80',
@@ -47,21 +47,32 @@ describe('Language', () => {
   });
 
   test('Deve testar a rota de listar os languages de um contest', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar language por id', async function () {
-    const response = await axios.get(`${baseUrl}/${language.langNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${language.langNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.langNumber).toBe(language.langNumber);
+      expect(statusCode).toBe(200);
+      expect(output.langNumber).toBe(language.langNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+    }
   });
 
   test('Deve testar a rota de listar language por id com um id inválido', async function () {
@@ -77,12 +88,18 @@ describe('Language', () => {
     const newLanguage = { ...language };
     newLanguage.langNumber--;
 
-    const response = await axios.post(baseUrl, newLanguage);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.post(baseUrl, newLanguage);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.langNumber).toBe(newLanguage.langNumber);
+      expect(statusCode).toBe(201);
+      expect(output.langNumber).toBe(newLanguage.langNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar language que já existe', async function () {
@@ -98,25 +115,37 @@ describe('Language', () => {
     const updatedLanguage = { ...language };
     updatedLanguage.langName = 'New Language Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedLanguage.langNumber}`,
-      updatedLanguage
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${updatedLanguage.langNumber}`,
+        updatedLanguage
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.langNumber).toBe(updatedLanguage.langNumber);
+      expect(statusCode).toBe(200);
+      expect(output.langNumber).toBe(updatedLanguage.langNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um language', async function () {
-    const response = await axios.delete(
-      `${baseUrl}/${language.langNumber + 1}`
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/${language.langNumber + 1}`
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });

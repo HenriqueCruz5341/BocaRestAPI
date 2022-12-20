@@ -11,7 +11,7 @@ export default class ProblemLanguageController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/problem/:idP/language',
+      '/api/contest/:idC/problem/:idP/language',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;
@@ -29,7 +29,7 @@ export default class ProblemLanguageController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/problem/:idP/language',
+      '/api/contest/:idC/problem/:idP/language',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;
@@ -46,7 +46,7 @@ export default class ProblemLanguageController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/problem/:idP/language',
+      '/api/contest/:idC/problem/:idP/language',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;

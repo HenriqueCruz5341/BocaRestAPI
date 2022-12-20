@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('WorkingUser', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 110,
     contestName: 'Contest 110',
@@ -16,7 +16,7 @@ describe('WorkingUser', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseWorking = `http://localhost:3000/contest/${contest.contestNumber}/working`;
+  const baseWorking = `http://localhost:3000/api/contest/${contest.contestNumber}/working`;
   const working = {
     workingNumber: 30,
     workingName: 'Working 30',
@@ -31,7 +31,7 @@ describe('WorkingUser', () => {
   const workingFour = { ...working, workingNumber: 24 };
   const workingFive = { ...working, workingNumber: 25 };
 
-  const baseSite = `http://localhost:3000/contest/${contest.contestNumber}/site`;
+  const baseSite = `http://localhost:3000/api/contest/${contest.contestNumber}/site`;
   const site = {
     siteNumber: 60,
     siteIp: '127.0.0.1/boca',
@@ -56,7 +56,7 @@ describe('WorkingUser', () => {
     siteTasking: 1,
     siteAutoJudge: false,
   };
-  const baseUser = `http://localhost:3000/contest/${contest.contestNumber}/site/${site.siteNumber}/user`;
+  const baseUser = `http://localhost:3000/api/contest/${contest.contestNumber}/site/${site.siteNumber}/user`;
   const user = {
     userNumber: 100,
     userName: 'User 100',
@@ -81,7 +81,7 @@ describe('WorkingUser', () => {
   const userFour = { ...userOne, userNumber: 93, userName: 'User 93' };
   const userFive = { ...userOne, userNumber: 94, userName: 'User 94' };
 
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/working/${working.workingNumber}/user`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/working/${working.workingNumber}/user`;
   const workingUser = {
     userSiteNumbers: [
       { siteNumber: site.siteNumber, userNumber: userOne.userNumber },
@@ -90,7 +90,7 @@ describe('WorkingUser', () => {
     ],
   };
 
-  const baseUrlUserWorking = `http://localhost:3000/contest/${contest.contestNumber}/site/${site.siteNumber}/user/${user.userNumber}/working`;
+  const baseUrlUserWorking = `http://localhost:3000/api/contest/${contest.contestNumber}/site/${site.siteNumber}/user/${user.userNumber}/working`;
   const userWorking = {
     workingNumbers: [
       workingOne.workingNumber,
@@ -162,19 +162,25 @@ describe('WorkingUser', () => {
 
   describe('User à Working', () => {
     test('Deve testar a rota de listar os users de um working', async function () {
-      const response = await axios.get(baseUrl);
-      const output = response.data;
-      const statusCode = response.status;
+      try {
+        const response = await axios.get(baseUrl);
+        const output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(200);
-      expect(output).toBeInstanceOf(Array);
-      for (let i = 0; i < workingUser.userSiteNumbers.length; i++) {
-        expect(output[i].siteNumber).toBe(
-          workingUser.userSiteNumbers[i].siteNumber
-        );
-        expect(output[i].userNumber).toBe(
-          workingUser.userSiteNumbers[i].userNumber
-        );
+        expect(statusCode).toBe(200);
+        expect(output).toBeInstanceOf(Array);
+        for (let i = 0; i < workingUser.userSiteNumbers.length; i++) {
+          expect(output[i].siteNumber).toBe(
+            workingUser.userSiteNumbers[i].siteNumber
+          );
+          expect(output[i].userNumber).toBe(
+            workingUser.userSiteNumbers[i].userNumber
+          );
+        }
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
       }
     });
 
@@ -185,18 +191,24 @@ describe('WorkingUser', () => {
           { siteNumber: site.siteNumber, userNumber: userFive.userNumber },
         ],
       };
-      const response = await axios.post(baseUrl, newWorkingUser);
-      const output = response.data;
-      const statusCode = response.status;
+      try {
+        const response = await axios.post(baseUrl, newWorkingUser);
+        const output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(201);
-      for (let i = 0; i < newWorkingUser.userSiteNumbers.length; i++) {
-        expect(output[i].siteNumber).toBe(
-          newWorkingUser.userSiteNumbers[i].siteNumber
-        );
-        expect(output[i].userNumber).toBe(
-          newWorkingUser.userSiteNumbers[i].userNumber
-        );
+        expect(statusCode).toBe(201);
+        for (let i = 0; i < newWorkingUser.userSiteNumbers.length; i++) {
+          expect(output[i].siteNumber).toBe(
+            newWorkingUser.userSiteNumbers[i].siteNumber
+          );
+          expect(output[i].userNumber).toBe(
+            newWorkingUser.userSiteNumbers[i].userNumber
+          );
+        }
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
       }
     });
 
@@ -210,32 +222,44 @@ describe('WorkingUser', () => {
     });
 
     test('Deve testar a rota de deletar uma associação de users à workings', async function () {
-      let response = await axios.delete(baseUrl, {
-        data: {
-          userSiteNumbers: [
-            { siteNumber: site.siteNumber, userNumber: userOne.userNumber },
-            { siteNumber: site.siteNumber, userNumber: userTwo.userNumber },
-          ],
-        },
-      });
-      let output = response.data;
-      const statusCode = response.status;
+      try {
+        let response = await axios.delete(baseUrl, {
+          data: {
+            userSiteNumbers: [
+              { siteNumber: site.siteNumber, userNumber: userOne.userNumber },
+              { siteNumber: site.siteNumber, userNumber: userTwo.userNumber },
+            ],
+          },
+        });
+        let output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(200);
-      expect(output).toBe('');
+        expect(statusCode).toBe(200);
+        expect(output).toBe('');
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
+      }
     });
   });
 
   describe('Working à User', () => {
     test('Deve testar a rota de listar os workings de um user', async function () {
-      const response = await axios.get(baseUrlUserWorking);
-      const output = response.data;
-      const statusCode = response.status;
+      try {
+        const response = await axios.get(baseUrlUserWorking);
+        const output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(200);
-      expect(output).toBeInstanceOf(Array);
-      for (let i = 0; i < userWorking.workingNumbers.length; i++) {
-        expect(output[i].workingNumber).toBe(userWorking.workingNumbers[i]);
+        expect(statusCode).toBe(200);
+        expect(output).toBeInstanceOf(Array);
+        for (let i = 0; i < userWorking.workingNumbers.length; i++) {
+          expect(output[i].workingNumber).toBe(userWorking.workingNumbers[i]);
+        }
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
       }
     });
 
@@ -243,13 +267,21 @@ describe('WorkingUser', () => {
       const newUserWorking = {
         workingNumbers: [workingFour.workingNumber, workingFive.workingNumber],
       };
-      const response = await axios.post(baseUrlUserWorking, newUserWorking);
-      const output = response.data;
-      const statusCode = response.status;
+      try {
+        const response = await axios.post(baseUrlUserWorking, newUserWorking);
+        const output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(201);
-      for (let i = 0; i < newUserWorking.workingNumbers.length; i++) {
-        expect(output[i].workingNumber).toBe(newUserWorking.workingNumbers[i]);
+        expect(statusCode).toBe(201);
+        for (let i = 0; i < newUserWorking.workingNumbers.length; i++) {
+          expect(output[i].workingNumber).toBe(
+            newUserWorking.workingNumbers[i]
+          );
+        }
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
       }
     });
 
@@ -263,16 +295,25 @@ describe('WorkingUser', () => {
     });
 
     test('Deve testar a rota de deletar uma associação de working à users', async function () {
-      let response = await axios.delete(baseUrlUserWorking, {
-        data: {
-          workingNumbers: [workingOne.workingNumber, workingTwo.workingNumber],
-        },
-      });
-      let output = response.data;
-      const statusCode = response.status;
+      try {
+        let response = await axios.delete(baseUrlUserWorking, {
+          data: {
+            workingNumbers: [
+              workingOne.workingNumber,
+              workingTwo.workingNumber,
+            ],
+          },
+        });
+        let output = response.data;
+        const statusCode = response.status;
 
-      expect(statusCode).toBe(200);
-      expect(output).toBe('');
+        expect(statusCode).toBe(200);
+        expect(output).toBe('');
+      } catch (err) {
+        const error = err as AxiosError;
+        console.log(error.response?.data);
+        fail();
+      }
     });
   });
 });

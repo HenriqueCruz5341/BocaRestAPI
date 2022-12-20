@@ -14,7 +14,7 @@ export default class WorkingUserController {
     // user for working
     httpServer.register(
       'get',
-      '/contest/:idC/working/:idW/user',
+      '/api/contest/:idC/working/:idW/user',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;
@@ -32,7 +32,7 @@ export default class WorkingUserController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/working/:idW/user',
+      '/api/contest/:idC/working/:idW/user',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;
@@ -49,7 +49,7 @@ export default class WorkingUserController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/working/:idW/user',
+      '/api/contest/:idC/working/:idW/user',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;
@@ -68,7 +68,7 @@ export default class WorkingUserController {
     // working for user
     httpServer.register(
       'get',
-      '/contest/:idC/site/:idS/user/:idU/working',
+      '/api/contest/:idC/site/:idS/user/:idU/working',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;
@@ -87,7 +87,7 @@ export default class WorkingUserController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/site/:idS/user/:idU/working',
+      '/api/contest/:idC/site/:idS/user/:idU/working',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;
@@ -104,7 +104,7 @@ export default class WorkingUserController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/site/:idS/user/:idU/working',
+      '/api/contest/:idC/site/:idS/user/:idU/working',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;

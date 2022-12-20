@@ -11,7 +11,7 @@ export default class UserController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/site/:idS/user',
+      '/api/contest/:idC/site/:idS/user',
       async function (params: any, body: any) {
         try {
           const { idC, idS } = params;
@@ -26,7 +26,7 @@ export default class UserController {
 
     httpServer.register(
       'get',
-      '/contest/:idC/site/:idS/user/:idU',
+      '/api/contest/:idC/site/:idS/user/:idU',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;
@@ -42,7 +42,7 @@ export default class UserController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/site/:idS/user',
+      '/api/contest/:idC/site/:idS/user',
       async function (params: any, body: any) {
         try {
           const { idC, idS } = params;
@@ -78,7 +78,7 @@ export default class UserController {
 
     httpServer.register(
       'put',
-      '/contest/:idC/site/:idS/user/:idU',
+      '/api/contest/:idC/site/:idS/user/:idU',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;
@@ -116,7 +116,7 @@ export default class UserController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/site/:idS/user/:idU',
+      '/api/contest/:idC/site/:idS/user/:idU',
       async function (params: any, body: any) {
         try {
           const { idC, idS, idU } = params;

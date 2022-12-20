@@ -11,7 +11,7 @@ export default class LanguageController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/language',
+      '/api/contest/:idC/language',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -26,7 +26,7 @@ export default class LanguageController {
 
     httpServer.register(
       'get',
-      '/contest/:idC/language/:idL',
+      '/api/contest/:idC/language/:idL',
       async function (params: any, body: any) {
         try {
           const { idC, idL } = params;
@@ -42,7 +42,7 @@ export default class LanguageController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/language',
+      '/api/contest/:idC/language',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -64,7 +64,7 @@ export default class LanguageController {
 
     httpServer.register(
       'put',
-      '/contest/:idC/language/:idL',
+      '/api/contest/:idC/language/:idL',
       async function (params: any, body: any) {
         try {
           const { idC, idL } = params;
@@ -83,7 +83,7 @@ export default class LanguageController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/language/:idL',
+      '/api/contest/:idC/language/:idL',
       async function (params: any, body: any) {
         try {
           const { idC, idL } = params;

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('Working', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 100,
     contestName: 'Contest 100',
@@ -16,7 +16,7 @@ describe('Working', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/working`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/working`;
   const working = {
     workingNumber: 80,
     workingName: 'Working 80',
@@ -50,21 +50,33 @@ describe('Working', () => {
   });
 
   test('Deve testar a rota de listar os working de um contest', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar working por id', async function () {
-    const response = await axios.get(`${baseUrl}/${working.workingNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${working.workingNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.workingNumber).toBe(working.workingNumber);
+      expect(statusCode).toBe(200);
+      expect(output.workingNumber).toBe(working.workingNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar working por id com um id inválido', async function () {
@@ -80,12 +92,18 @@ describe('Working', () => {
     const newWorking = { ...working };
     newWorking.workingNumber--;
 
-    const response = await axios.post(baseUrl, newWorking);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.post(baseUrl, newWorking);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.workingNumber).toBe(newWorking.workingNumber);
+      expect(statusCode).toBe(201);
+      expect(output.workingNumber).toBe(newWorking.workingNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar working que já existe', async function () {
@@ -101,25 +119,37 @@ describe('Working', () => {
     const updatedWorking = { ...working };
     updatedWorking.workingName = 'New Working Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedWorking.workingNumber}`,
-      updatedWorking
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${updatedWorking.workingNumber}`,
+        updatedWorking
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.workingNumber).toBe(updatedWorking.workingNumber);
+      expect(statusCode).toBe(200);
+      expect(output.workingNumber).toBe(updatedWorking.workingNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um working', async function () {
-    const response = await axios.delete(
-      `${baseUrl}/${working.workingNumber + 1}`
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/${working.workingNumber + 1}`
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });

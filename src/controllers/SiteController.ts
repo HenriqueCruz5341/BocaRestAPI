@@ -11,7 +11,7 @@ export default class SiteController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/site',
+      '/api/contest/:idC/site',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -26,7 +26,7 @@ export default class SiteController {
 
     httpServer.register(
       'get',
-      '/contest/:idC/site/:idS',
+      '/api/contest/:idC/site/:idS',
       async function (params: any, body: any) {
         try {
           const { idC, idS } = params;
@@ -42,7 +42,7 @@ export default class SiteController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/site',
+      '/api/contest/:idC/site',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -83,7 +83,7 @@ export default class SiteController {
 
     httpServer.register(
       'put',
-      '/contest/:idC/site/:idS',
+      '/api/contest/:idC/site/:idS',
       async function (params: any, body: any) {
         try {
           const { idC, idS } = params;
@@ -124,7 +124,7 @@ export default class SiteController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/site/:idS',
+      '/api/contest/:idC/site/:idS',
       async function (params: any, body: any) {
         try {
           const { idC, idS } = params;

@@ -11,7 +11,7 @@ export default class ProblemController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/problem',
+      '/api/contest/:idC/problem',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -26,7 +26,7 @@ export default class ProblemController {
 
     httpServer.register(
       'get',
-      '/contest/:idC/problem/:idP',
+      '/api/contest/:idC/problem/:idP',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;
@@ -42,7 +42,7 @@ export default class ProblemController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/problem',
+      '/api/contest/:idC/problem',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -72,7 +72,7 @@ export default class ProblemController {
 
     httpServer.register(
       'put',
-      '/contest/:idC/problem/:idP',
+      '/api/contest/:idC/problem/:idP',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;
@@ -102,7 +102,7 @@ export default class ProblemController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/problem/:idP',
+      '/api/contest/:idC/problem/:idP',
       async function (params: any, body: any) {
         try {
           const { idC, idP } = params;

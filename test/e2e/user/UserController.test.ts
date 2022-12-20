@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('User', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 70,
     contestName: 'Contest 70',
@@ -16,7 +16,7 @@ describe('User', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseSite = `http://localhost:3000/contest/${contest.contestNumber}/site`;
+  const baseSite = `http://localhost:3000/api/contest/${contest.contestNumber}/site`;
   const site = {
     siteNumber: 70,
     siteIp: '127.0.0.1/boca',
@@ -41,7 +41,7 @@ describe('User', () => {
     siteTasking: 1,
     siteAutoJudge: false,
   };
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/site/${site.siteNumber}/user`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/site/${site.siteNumber}/user`;
   const user = {
     userNumber: 80,
     userName: 'User',
@@ -88,21 +88,33 @@ describe('User', () => {
   });
 
   test('Deve testar a rota de listar os users de um contest', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar user por id', async function () {
-    const response = await axios.get(`${baseUrl}/${user.userNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${user.userNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.userNumber).toBe(user.userNumber);
+      expect(statusCode).toBe(200);
+      expect(output.userNumber).toBe(user.userNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar user por id com um id inválido', async function () {
@@ -119,12 +131,18 @@ describe('User', () => {
     newUser.userNumber--;
     newUser.userName = newUser.userName + newUser.userNumber;
 
-    const response = await axios.post(baseUrl, newUser);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.post(baseUrl, newUser);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.userNumber).toBe(newUser.userNumber);
+      expect(statusCode).toBe(201);
+      expect(output.userNumber).toBe(newUser.userNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar user que já existe', async function () {
@@ -140,24 +158,36 @@ describe('User', () => {
     const updatedUser = { ...user };
     updatedUser.userName = 'New Site Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedUser.userNumber}`,
-      updatedUser
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${updatedUser.userNumber}`,
+        updatedUser
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.userNumber).toBe(updatedUser.userNumber);
-    expect(output.userName).toBe(updatedUser.userName);
+      expect(statusCode).toBe(200);
+      expect(output.userNumber).toBe(updatedUser.userNumber);
+      expect(output.userName).toBe(updatedUser.userName);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um user', async function () {
-    const response = await axios.delete(`${baseUrl}/${user.userNumber + 1}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(`${baseUrl}/${user.userNumber + 1}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });

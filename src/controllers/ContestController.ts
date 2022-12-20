@@ -11,7 +11,7 @@ export default class ContestController {
   ) {
     httpServer.register(
       'get',
-      '/contest',
+      '/api/contest',
       async function (params: any, body: any) {
         try {
           const contests = await contestUseCase.list();
@@ -25,7 +25,7 @@ export default class ContestController {
 
     httpServer.register(
       'get',
-      '/contest/:id',
+      '/api/contest/:id',
       async function (params: any, body: any) {
         try {
           const { id } = params;
@@ -41,7 +41,7 @@ export default class ContestController {
 
     httpServer.register(
       'post',
-      '/contest',
+      '/api/contest',
       async function (params: any, body: any) {
         try {
           const contest = await contestUseCase.create(
@@ -70,7 +70,7 @@ export default class ContestController {
 
     httpServer.register(
       'put',
-      '/contest/:id',
+      '/api/contest/:id',
       async function (params: any, body: any) {
         try {
           const { id } = params;
@@ -101,7 +101,7 @@ export default class ContestController {
 
     httpServer.register(
       'delete',
-      '/contest/:id',
+      '/api/contest/:id',
       async function (params: any, body: any) {
         try {
           const { id } = params;

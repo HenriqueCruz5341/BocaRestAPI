@@ -11,7 +11,7 @@ export default class WorkingController {
   ) {
     httpServer.register(
       'get',
-      '/contest/:idC/working',
+      '/api/contest/:idC/working',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -26,7 +26,7 @@ export default class WorkingController {
 
     httpServer.register(
       'get',
-      '/contest/:idC/working/:idW',
+      '/api/contest/:idC/working/:idW',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;
@@ -42,7 +42,7 @@ export default class WorkingController {
 
     httpServer.register(
       'post',
-      '/contest/:idC/working',
+      '/api/contest/:idC/working',
       async function (params: any, body: any) {
         try {
           const { idC } = params;
@@ -67,7 +67,7 @@ export default class WorkingController {
 
     httpServer.register(
       'put',
-      '/contest/:idC/working/:idW',
+      '/api/contest/:idC/working/:idW',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;
@@ -93,7 +93,7 @@ export default class WorkingController {
 
     httpServer.register(
       'delete',
-      '/contest/:idC/working/:idW',
+      '/api/contest/:idC/working/:idW',
       async function (params: any, body: any) {
         try {
           const { idC, idW } = params;

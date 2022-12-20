@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('Problem', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 50,
     contestName: 'Contest 50',
@@ -16,7 +16,7 @@ describe('Problem', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseWorking = `http://localhost:3000/contest/${contest.contestNumber}/working`;
+  const baseWorking = `http://localhost:3000/api/contest/${contest.contestNumber}/working`;
   const working = {
     workingNumber: 10,
     workingName: 'Working 10',
@@ -26,7 +26,7 @@ describe('Problem', () => {
     workingIsMultiLogin: true,
   };
 
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/problem`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/problem`;
   const problem = {
     workingNumber: working.workingNumber,
     problemNumber: 80,
@@ -67,21 +67,33 @@ describe('Problem', () => {
   });
 
   test('Deve testar a rota de listar os problems de um contest', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar problem por id', async function () {
-    const response = await axios.get(`${baseUrl}/${problem.problemNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${problem.problemNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.problemNumber).toBe(problem.problemNumber);
+      expect(statusCode).toBe(200);
+      expect(output.problemNumber).toBe(problem.problemNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar problem por id com um id inválido', async function () {
@@ -97,12 +109,18 @@ describe('Problem', () => {
     const newProblem = { ...problem };
     newProblem.problemNumber--;
 
-    const response = await axios.post(baseUrl, newProblem);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.post(baseUrl, newProblem);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.problemNumber).toBe(newProblem.problemNumber);
+      expect(statusCode).toBe(201);
+      expect(output.problemNumber).toBe(newProblem.problemNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar problem que já existe', async function () {
@@ -118,25 +136,37 @@ describe('Problem', () => {
     const updatedProblem = { ...problem };
     updatedProblem.problemName = 'New Problem Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedProblem.problemNumber}`,
-      updatedProblem
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${updatedProblem.problemNumber}`,
+        updatedProblem
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.problemNumber).toBe(updatedProblem.problemNumber);
+      expect(statusCode).toBe(200);
+      expect(output.problemNumber).toBe(updatedProblem.problemNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um problem', async function () {
-    const response = await axios.delete(
-      `${baseUrl}/${problem.problemNumber + 1}`
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/${problem.problemNumber + 1}`
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('Contest', () => {
-  const baseUrl = 'http://localhost:3000/contest';
+  const baseUrl = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 80,
     contestName: 'Contest 80',
@@ -39,21 +39,33 @@ describe('Contest', () => {
   });
 
   test('Deve testar a rota de listar todos os contests', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar contests por id', async function () {
-    const response = await axios.get(`${baseUrl}/${contest.contestNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${contest.contestNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.contestNumber).toBe(contest.contestNumber);
+      expect(statusCode).toBe(200);
+      expect(output.contestNumber).toBe(contest.contestNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar contests por id com um id inválido', async function () {
@@ -66,15 +78,21 @@ describe('Contest', () => {
   });
 
   test('Deve testar a rota de criar um contest', async function () {
-    const newContest = { ...contest };
-    newContest.contestNumber--;
+    try {
+      const newContest = { ...contest };
+      newContest.contestNumber--;
 
-    const response = await axios.post(baseUrl, newContest);
-    const output = response.data;
-    const statusCode = response.status;
+      const response = await axios.post(baseUrl, newContest);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.contestNumber).toBe(newContest.contestNumber);
+      expect(statusCode).toBe(201);
+      expect(output.contestNumber).toBe(newContest.contestNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar contest que já existe', async function () {
@@ -87,28 +105,40 @@ describe('Contest', () => {
   });
 
   test('Deve testar a rota de atualizar um contest', async function () {
-    const updatedContest = { ...contest };
-    updatedContest.contestName = 'New Contest Name';
+    try {
+      const updatedContest = { ...contest };
+      updatedContest.contestName = 'New Contest Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedContest.contestNumber}`,
-      updatedContest
-    );
-    const output = response.data;
-    const statusCode = response.status;
+      const response = await axios.put(
+        `${baseUrl}/${updatedContest.contestNumber}`,
+        updatedContest
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.contestNumber).toBe(updatedContest.contestNumber);
+      expect(statusCode).toBe(200);
+      expect(output.contestNumber).toBe(updatedContest.contestNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um contest', async function () {
-    const response = await axios.delete(
-      `${baseUrl}/${contest.contestNumber + 1}`
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(
+        `${baseUrl}/${contest.contestNumber + 1}`
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });

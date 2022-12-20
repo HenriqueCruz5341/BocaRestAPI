@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 describe('Site', () => {
-  const baseContest = 'http://localhost:3000/contest';
+  const baseContest = 'http://localhost:3000/api/contest';
   const contest = {
     contestNumber: 60,
     contestName: 'Contest 60',
@@ -16,7 +16,7 @@ describe('Site', () => {
     contestUnlockKey: 'unlockKey',
     contestMainSiteUrl: 'https://www.google.com',
   };
-  const baseUrl = `http://localhost:3000/contest/${contest.contestNumber}/site`;
+  const baseUrl = `http://localhost:3000/api/contest/${contest.contestNumber}/site`;
   const site = {
     siteNumber: 80,
     siteIp: '127.0.0.1/boca',
@@ -66,21 +66,33 @@ describe('Site', () => {
   });
 
   test('Deve testar a rota de listar os sites de um contest', async function () {
-    const response = await axios.get(baseUrl);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(baseUrl);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBeInstanceOf(Array);
+      expect(statusCode).toBe(200);
+      expect(output).toBeInstanceOf(Array);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar site por id', async function () {
-    const response = await axios.get(`${baseUrl}/${site.siteNumber}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.get(`${baseUrl}/${site.siteNumber}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.siteNumber).toBe(site.siteNumber);
+      expect(statusCode).toBe(200);
+      expect(output.siteNumber).toBe(site.siteNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de listar site por id com um id inválido', async function () {
@@ -96,12 +108,18 @@ describe('Site', () => {
     const newSite = { ...site };
     newSite.siteNumber--;
 
-    const response = await axios.post(baseUrl, newSite);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.post(baseUrl, newSite);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(201);
-    expect(output.siteNumber).toBe(newSite.siteNumber);
+      expect(statusCode).toBe(201);
+      expect(output.siteNumber).toBe(newSite.siteNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve retornar erro 500 se tentar criar site que já existe', async function () {
@@ -117,23 +135,35 @@ describe('Site', () => {
     const updatedSite = { ...site };
     updatedSite.siteName = 'New Site Name';
 
-    const response = await axios.put(
-      `${baseUrl}/${updatedSite.siteNumber}`,
-      updatedSite
-    );
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.put(
+        `${baseUrl}/${updatedSite.siteNumber}`,
+        updatedSite
+      );
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output.siteNumber).toBe(updatedSite.siteNumber);
+      expect(statusCode).toBe(200);
+      expect(output.siteNumber).toBe(updatedSite.siteNumber);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 
   test('Deve testar a rota de deletar um site', async function () {
-    const response = await axios.delete(`${baseUrl}/${site.siteNumber + 1}`);
-    const output = response.data;
-    const statusCode = response.status;
+    try {
+      const response = await axios.delete(`${baseUrl}/${site.siteNumber + 1}`);
+      const output = response.data;
+      const statusCode = response.status;
 
-    expect(statusCode).toBe(200);
-    expect(output).toBe('');
+      expect(statusCode).toBe(200);
+      expect(output).toBe('');
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error.response?.data);
+      fail();
+    }
   });
 });
